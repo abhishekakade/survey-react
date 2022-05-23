@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/survey-react/static/css/main.ce3c89df.css",
-    "main.js": "/survey-react/static/js/main.65086217.js",
-    "static/js/787.fabfc4ce.chunk.js": "/survey-react/static/js/787.fabfc4ce.chunk.js",
+    "main.js": "/survey-react/static/js/main.ff7ce13e.js",
+    "static/js/787.23880831.chunk.js": "/survey-react/static/js/787.23880831.chunk.js",
     "index.html": "/survey-react/index.html",
     "main.ce3c89df.css.map": "/survey-react/static/css/main.ce3c89df.css.map",
-    "main.65086217.js.map": "/survey-react/static/js/main.65086217.js.map",
-    "787.fabfc4ce.chunk.js.map": "/survey-react/static/js/787.fabfc4ce.chunk.js.map"
+    "main.ff7ce13e.js.map": "/survey-react/static/js/main.ff7ce13e.js.map",
+    "787.23880831.chunk.js.map": "/survey-react/static/js/787.23880831.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.ce3c89df.css",
-    "static/js/main.65086217.js"
+    "static/js/main.ff7ce13e.js"
   ]
 }
