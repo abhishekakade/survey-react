@@ -7,14 +7,19 @@ import Button from "@mui/material/Button";
 import { ArrowBack, ArrowForward } from "@styled-icons/ionicons-solid";
 import Votes from "./Votes";
 import "../styles/Form.css";
+import { questionsWithScore, marks } from "../utils/allQuestions";
+// import { questionsWithScore, marks } from "../utils/allQuestions";
 
 const Form = () => {
   // maximum steps = 3 and minimum steps = 0
   const MIN = 0;
-  const MAX = 2;
+  const MAX = questionsWithScore?.length - 1;
   const [currentStep, setCurrentStep] = useState(0);
   const [results, setResults] = useState(false);
   const [wait, setWait] = useState(false);
+
+  //   get questions and scores from utils
+  const [score, setScore] = useState(questionsWithScore);
 
   //   slider value
   const [sliderVal, setSliderVal] = useState(null);
@@ -29,52 +34,6 @@ const Form = () => {
     return () => clearTimeout(timer);
   }, [wait]);
 
-  const [score, setScore] = useState([
-    {
-      que: 1,
-      score: null,
-    },
-
-    {
-      que: 2,
-      score: null,
-    },
-
-    {
-      que: 3,
-      score: null,
-    },
-  ]);
-
-  const questionsArr = [
-    "I have ambitious aims of making a difference.",
-    "My leadership journey has progressed as I anticipated.",
-    "I have spent fewer than 4 years in full time service or ministry.",
-  ];
-
-  const marks = [
-    {
-      value: 0,
-      label: "Strongly Disagree",
-    },
-    {
-      value: 1,
-      label: "Disagree",
-    },
-    {
-      value: 2,
-      label: "Neutral",
-    },
-    {
-      value: 3,
-      label: "Agree",
-    },
-    {
-      value: 4,
-      label: "Strongly Agree",
-    },
-  ];
-
   function valuetext(value) {
     return `${value}`;
   }
@@ -86,10 +45,15 @@ const Form = () => {
     }
   };
 
-  const goToPrevious = () => {
+  const goToPrevious = (e) => {
+    e.preventDefault();
+    // console.log("event", e);
     if (currentStep > MIN) {
       setCurrentStep((prevStep) => prevStep - 1);
-      console.log("currentStep", currentStep);
+      //   console.log("currentStep", currentStep);
+      //   console.log("currentQVal", score);
+      //   console.log("currentQ", score[currentStep - 1]?.q);
+      //   console.log("currentQScore", score[currentStep - 1]?.score);
     }
   };
 
@@ -123,13 +87,13 @@ const Form = () => {
         checkAndSetResults();
       }
 
-      //   reset slider value
+      //   set slider value
       setSliderVal(e.target.value);
     } else return null;
     setWait(false);
   };
 
-  //   console.log(score);
+  //   console.log("score", score);
   //   console.log(score[currentStep].score);
 
   return (
@@ -146,15 +110,15 @@ const Form = () => {
               >
                 <LinearProgress
                   variant="determinate"
-                  value={(currentStep + 1) * 33.33}
+                  value={((currentStep + 1) / questionsWithScore?.length) * 100}
                 />
               </Box>
               <h4>
-                {currentStep + 1}/{questionsArr.length}
+                {currentStep + 1}/{questionsWithScore?.length}
               </h4>
               <p className="question">
                 {wait ? (
-                  questionsArr[currentStep]
+                  questionsWithScore[currentStep]?.q
                 ) : (
                   <span>loading next question...</span>
                 )}
@@ -170,12 +134,12 @@ const Form = () => {
                   marks={marks}
                   min={0}
                   max={4}
-                  value={sliderVal}
+                  value={sliderVal || questionsWithScore[currentStep]?.score}
                   onChange={(e) => handleSlider(e)}
                 />
               </Box>
               <div className="buttons">
-                <Button variant="text" onClick={() => goToPrevious()}>
+                <Button variant="text" onClick={(e) => goToPrevious(e)}>
                   <ArrowBack className="left-arrow" /> Prev
                 </Button>
                 <Button variant="text" onClick={() => goToNext()}>
@@ -185,7 +149,7 @@ const Form = () => {
             </div>
           </div>
         ) : (
-          <Votes score={score} questions={questionsArr} />
+          <Votes questionsWithScore={questionsWithScore} />
         )}
       </div>
     </div>
