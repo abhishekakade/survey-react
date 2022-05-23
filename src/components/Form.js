@@ -1,8 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import Box from "@mui/material/Box";
 import Slider from "@mui/material/Slider";
+import LinearProgress from "@mui/material/LinearProgress";
+import Button from "@mui/material/Button";
+import { ArrowBack, ArrowForward } from "@styled-icons/ionicons-solid";
 import Votes from "./Votes";
+import "../styles/Form.css";
 
 const Form = () => {
   // maximum steps = 3 and minimum steps = 0
@@ -10,6 +14,20 @@ const Form = () => {
   const MAX = 2;
   const [currentStep, setCurrentStep] = useState(0);
   const [results, setResults] = useState(false);
+  const [wait, setWait] = useState(false);
+
+  //   slider value
+  const [sliderVal, setSliderVal] = useState(null);
+
+  useEffect(() => {
+    const loader = () => {
+      //   console.log("reset slider");
+      setWait(true);
+      setSliderVal(null);
+    };
+    const timer = setTimeout(() => loader(), 500);
+    return () => clearTimeout(timer);
+  }, [wait]);
 
   const [score, setScore] = useState([
     {
@@ -63,66 +81,112 @@ const Form = () => {
 
   const goToNext = () => {
     if (currentStep < MAX) {
-      setCurrentStep((prevStep) => prevStep + 1);
+      wait && setCurrentStep((prevStep) => prevStep + 1);
+      //   console.log("currentStep", currentStep);
     }
   };
 
   const goToPrevious = () => {
     if (currentStep > MIN) {
       setCurrentStep((prevStep) => prevStep - 1);
+      console.log("currentStep", currentStep);
+    }
+  };
+
+  const checkAndSetResults = () => {
+    // check if any questions are unsolved
+    const nullAnswers = Object.values(score).every((score) => {
+      if (score === null) {
+        return true;
+      } else return false;
+    });
+    // console.log("nullAnswers", nullAnswers);
+    if (!nullAnswers) {
+      setResults(score);
     }
   };
 
   const handleSlider = (e) => {
-    // console.log("target", e.target.value);
+    setWait(true);
     // console.log("currentstep:", currentStep);
 
-    setScore((prevScore) => {
-      prevScore[currentStep]["score"] = e.target.value;
-      return { ...prevScore };
-    });
+    // console.log("wait status", wait);
+    if (wait) {
+      setScore((prevScore) => {
+        prevScore[currentStep]["score"] = e.target.value;
+        return { ...prevScore };
+      });
 
-    goToNext();
-    if (currentStep === MAX) {
-      console.log("reached end...");
-      setResults(true);
-    }
+      goToNext();
+      if (currentStep === MAX) {
+        console.log("reached end...");
+        checkAndSetResults();
+      }
+
+      //   reset slider value
+      setSliderVal(e.target.value);
+    } else return null;
+    setWait(false);
   };
 
-  //   console.log(questionsArr);
-  console.log(score);
-  //   console.log("currentstep", currentStep, score[currentStep]);
-  console.log(score[currentStep].score);
+  //   console.log(score);
+  //   console.log(score[currentStep].score);
 
   return (
     <div className="form">
       <h1>Form</h1>
       <div className="form-or-results">
-        <div className="progress-bar">
-          <div className="form-container">
-            <h3>Idealistic</h3>
-            <h4>
-              {currentStep + 1}/{questionsArr.length}
-            </h4>
-            <p>{questionsArr[currentStep]}</p>
-            <Box sx={{ width: "80vw", margin: "auto" }}>
-              <Slider
-                aria-label="Temperature"
-                //   defaultValue={null}
-                getAriaValueText={valuetext}
-                //   valueLabelDisplay="auto"
-                step={1}
-                marks={marks}
-                min={0}
-                max={4}
-                onChange={(e) => handleSlider(e)}
-              />
-            </Box>
-            <button onClick={() => goToPrevious()}>Previous</button>
-            <button onClick={() => goToNext()}>Next</button>
-            {results && <Votes score={score} questions={questionsArr} />}
+        {!results ? (
+          <div className="progress-bar">
+            <div className="form-container">
+              <h3>Idealistic</h3>
+              <Box
+                className="progressbar-mui"
+                sx={{ width: "200px", margin: "auto" }}
+              >
+                <LinearProgress
+                  variant="determinate"
+                  value={(currentStep + 1) * 33.33}
+                />
+              </Box>
+              <h4>
+                {currentStep + 1}/{questionsArr.length}
+              </h4>
+              <p className="question">
+                {wait ? (
+                  questionsArr[currentStep]
+                ) : (
+                  <span>loading next question...</span>
+                )}
+              </p>
+              <Box sx={{ width: "80vw", margin: "auto" }}>
+                <Slider
+                  className="slider"
+                  aria-label="Vote how much you agree or disagree."
+                  defaultValue={null}
+                  getAriaValueText={valuetext}
+                  //   valueLabelDisplay="auto"
+                  step={1}
+                  marks={marks}
+                  min={0}
+                  max={4}
+                  value={sliderVal}
+                  onChange={(e) => handleSlider(e)}
+                />
+              </Box>
+              <div className="buttons">
+                <Button variant="text" onClick={() => goToPrevious()}>
+                  <ArrowBack className="left-arrow" /> Prev
+                </Button>
+                <Button variant="text" onClick={() => goToNext()}>
+                  Next <ArrowForward className="right-arrow" />
+                </Button>
+              </div>
+            </div>
           </div>
-        </div>
+        ) : (
+          <Votes score={score} questions={questionsArr} />
+        )}
       </div>
     </div>
   );

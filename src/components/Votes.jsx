@@ -1,5 +1,5 @@
 import React from "react";
-import "../styles/Votes.css"
+import "../styles/Votes.css";
 
 const Votes = ({ score, questions }) => {
   const finalVotes = [];
@@ -9,12 +9,12 @@ const Votes = ({ score, questions }) => {
 
   return (
     <div>
-      <h2>Your Votes...</h2>
-      <div className="votes">
+      <h2>Your Votes</h2>
+      <div className="votes" style={{ display: "block", margin: "auto", textAlign: "center" }}>
         <ul>
           {finalVotes.map((item, index) => (
             <li key={index}>
-              {item.q}: {item.score}
+              {index + 1}. {item.q}: {item.score}
             </li>
           ))}
         </ul>
