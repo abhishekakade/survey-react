@@ -38,7 +38,7 @@ const Form = () => {
     return `${value}`;
   }
 
-  const goToNext = () => {
+  const goToNext = (e) => {
     if (currentStep < MAX) {
       wait && setCurrentStep((prevStep) => prevStep + 1);
       //   console.log("currentStep", currentStep);
@@ -97,62 +97,66 @@ const Form = () => {
   //   console.log(score[currentStep].score);
 
   return (
-    <div className="form">
-      <h1>Form</h1>
-      <div className="form-or-results">
-        {!results ? (
-          <div className="progress-bar">
-            <div className="form-container">
-              <h3>Idealistic</h3>
-              <Box
-                className="progressbar-mui"
-                sx={{ width: "200px", margin: "auto" }}
-              >
-                <LinearProgress
-                  variant="determinate"
-                  value={((currentStep + 1) / questionsWithScore?.length) * 100}
-                />
-              </Box>
-              <h4>
-                {currentStep + 1}/{questionsWithScore?.length}
-              </h4>
-              <p className="question">
-                {wait ? (
-                  questionsWithScore[currentStep]?.q
-                ) : (
-                  <span>loading next question...</span>
-                )}
-              </p>
-              <Box sx={{ width: "80vw", margin: "auto" }}>
-                <Slider
-                  className="slider"
-                  aria-label="Vote how much you agree or disagree."
-                  defaultValue={null}
-                  getAriaValueText={valuetext}
-                  //   valueLabelDisplay="auto"
-                  step={1}
-                  marks={marks}
-                  min={0}
-                  max={4}
-                  value={sliderVal || questionsWithScore[currentStep]?.score}
-                  onChange={(e) => handleSlider(e)}
-                />
-              </Box>
-              <div className="buttons">
-                <Button variant="text" onClick={(e) => goToPrevious(e)}>
-                  <ArrowBack className="left-arrow" /> Prev
-                </Button>
-                <Button variant="text" onClick={() => goToNext()}>
-                  Next <ArrowForward className="right-arrow" />
-                </Button>
+    <>
+      <h1 className="header">Form</h1>
+      <div className="form">
+        <div className="form-or-results">
+          {!results ? (
+            <div className="progress-bar">
+              <div className="form-container">
+                <h3>Idealistic</h3>
+                <Box
+                  className="progressbar-mui"
+                  sx={{ width: "200px", margin: "auto" }}
+                >
+                  <LinearProgress
+                    variant="determinate"
+                    value={
+                      ((currentStep + 1) / questionsWithScore?.length) * 100
+                    }
+                  />
+                </Box>
+                <h4>
+                  {currentStep + 1}/{questionsWithScore?.length}
+                </h4>
+                <p className="question">
+                  {wait ? (
+                    questionsWithScore[currentStep]?.q
+                  ) : (
+                    <span>loading next question...</span>
+                  )}
+                </p>
+                <Box sx={{ width: "85%", margin: "auto" }}>
+                  <Slider
+                    className="slider"
+                    aria-label="Vote how much you agree or disagree."
+                    defaultValue={null}
+                    getAriaValueText={valuetext}
+                    //   valueLabelDisplay="auto"
+                    step={1}
+                    marks={marks}
+                    min={0}
+                    max={4}
+                    value={sliderVal || questionsWithScore[currentStep]?.score}
+                    onChange={(e) => handleSlider(e)}
+                  />
+                </Box>
+                <div className="buttons">
+                  <Button variant="text" onClick={(e) => goToPrevious(e)}>
+                    <ArrowBack className="left-arrow" /> Prev
+                  </Button>
+                  <Button variant="text" onClick={() => goToNext()}>
+                    Next <ArrowForward className="right-arrow" />
+                  </Button>
+                </div>
               </div>
             </div>
-          </div>
-        ) : (
-          <Votes questionsWithScore={questionsWithScore} />
-        )}
+          ) : (
+            <Votes questionsWithScore={questionsWithScore} />
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

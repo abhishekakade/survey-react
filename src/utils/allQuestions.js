@@ -27,7 +27,7 @@ const questionsArr = [
   "I have spent fewer than 4 years in full time service or ministry.",
   "With hard work and determination, I have been able to persevere through the ministry challenges that have come my way.",
   "My plans are likely to succeed.",
-  "I’m beginning to believe the journey of service will be much harder than I anticipated.",
+  "I'm beginning to believe the journey of service will be much harder than I anticipated.",
 ];
 
 const addScoreToQuestions = (arr) => {

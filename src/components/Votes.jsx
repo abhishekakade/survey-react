@@ -1,5 +1,6 @@
 import React from "react";
 import "../styles/Votes.css";
+import { marks } from "../utils/allQuestions";
 
 const Votes = ({ questionsWithScore }) => {
   console.log("questionsWithScore Votes:", questionsWithScore);
@@ -14,7 +15,10 @@ const Votes = ({ questionsWithScore }) => {
         <ul>
           {questionsWithScore?.map((item, index) => (
             <li key={index}>
-              {index + 1}. {item.q}: {item.score}
+              {index + 1}. {item.q}:{" "}
+              {marks?.map((arr) =>
+                arr?.value === item?.score ? arr.label : null
+              )}
             </li>
           ))}
         </ul>

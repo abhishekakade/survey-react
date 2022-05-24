@@ -1,13 +1,28 @@
+.header {
+  background-color: #ffffff;
+  padding: 1.5rem 1rem;
+  margin: 0;
+  text-align: center;
+}
+
 .form {
   max-width: 80vw;
   display: block;
-  margin: auto;
-  padding: 1rem;
+  margin: 4rem auto;
+  padding: 1.5rem;
+  background-color: #ffffff;
+  border-radius: 10px;
+  text-align: center;
+}
+
+h3 {
+  font-size: 1.25rem;
 }
 
 .question {
   font-weight: bold;
-  font-size: 1.25rem;
+  font-size: 1.15rem;
+  padding-bottom: 1.5rem;
 }
 
 .buttons {
@@ -29,7 +44,15 @@
   .form {
     max-width: 100%;
     padding: 1rem;
-    margin: 1rem;
+    margin: 4rem 1rem;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  h3 {
+    font-size: 1.15rem;
   }
 
   .question {
@@ -37,12 +60,26 @@
   }
   .MuiSlider-markLabel {
     font-size: 0.75rem !important;
-    overflow-wrap: break-word;
-    word-wrap: break-word;
-    word-break: break-word;
+  }
+
+  .slider span[data-index="1"].MuiSlider-markLabel {
+    top: -50%;
+  }
+
+  .slider span[data-index="3"].MuiSlider-markLabel {
+    top: -50%;
   }
 
   .progressbar-mui {
-      width: 100px !important;
+    width: 100px !important;
+  }
+
+  .left-arrow {
+    height: 1rem;
+    margin: 0 0.25rem 0 0;
+  }
+  .right-arrow {
+    height: 1rem;
+    margin: 0 0 0 0.25rem;
   }
 }
